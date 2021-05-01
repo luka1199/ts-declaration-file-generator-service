@@ -10,5 +10,5 @@ mkdir -p $INSTALL_ROOT_FOLDER
 rm -Rf $INSTALL_FOLDER
 mkdir -p $INSTALL_FOLDER
 
-git clone --branch $VERSION https://github.com/proglang/run-time-information-gathering.git $INSTALL_FOLDER
+git clone --branch $VERSION https://github.com/luka1199/run-time-information-gathering.git $INSTALL_FOLDER
 $INSTALL_FOLDER/build/build.sh
