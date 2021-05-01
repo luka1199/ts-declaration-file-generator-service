@@ -21,7 +21,7 @@ CONTAINER_NAME=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 20 ; echo)
 
 docker rm $CONTAINER_NAME > /dev/null 2>&1
 
-MAC_OS_TIMEOUT = "gtimeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
+MAC_OS_TIMEOUT="gtimeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
 	--name $CONTAINER_NAME \
 	-v $ABS_ROOT_PROJECT_PATH:$FILE_IN_CONTAINER  \
 	-v $SCRIPT_PATH/blacklistedModules.json:/tmp/blacklistedModules.json \
@@ -30,7 +30,7 @@ MAC_OS_TIMEOUT = "gtimeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
 	/tmp/blacklistedModules.json \
 	1> /tmp/runtimeinfo"
 
-OTHER_TIMEOUT = "timeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
+OTHER_TIMEOUT="timeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
 	--name $CONTAINER_NAME \
 	-v $ABS_ROOT_PROJECT_PATH:$FILE_IN_CONTAINER  \
 	-v $SCRIPT_PATH/blacklistedModules.json:/tmp/blacklistedModules.json \
