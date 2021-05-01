@@ -20,14 +20,29 @@ FILE_IN_CONTAINER="/tmp/runtimeAnalysis"
 CONTAINER_NAME=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 20 ; echo)
 
 docker rm $CONTAINER_NAME > /dev/null 2>&1
-gtimeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
+
+MAC_OS_TIMEOUT = "gtimeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
 	--name $CONTAINER_NAME \
 	-v $ABS_ROOT_PROJECT_PATH:$FILE_IN_CONTAINER  \
 	-v $SCRIPT_PATH/blacklistedModules.json:/tmp/blacklistedModules.json \
 	master-mind-wp3 \
 	$FILE_IN_CONTAINER/$JS_FILE_NAME \
 	/tmp/blacklistedModules.json \
-	1> /tmp/runtimeinfo
+	1> /tmp/runtimeinfo"
+
+OTHER_TIMEOUT = "timeout -k $TIMEOUT_SECONDS $TIMEOUT_SECONDS docker run \
+	--name $CONTAINER_NAME \
+	-v $ABS_ROOT_PROJECT_PATH:$FILE_IN_CONTAINER  \
+	-v $SCRIPT_PATH/blacklistedModules.json:/tmp/blacklistedModules.json \
+	master-mind-wp3 \
+	$FILE_IN_CONTAINER/$JS_FILE_NAME \
+	/tmp/blacklistedModules.json \
+	1> /tmp/runtimeinfo"
+
+case "$OSTYPE" in
+  darwin*) eval $MAC_OS_TIMEOUT ;;
+  *)       eval $OTHER_TIMEOUT ;;
+esac
 
 LINE_NUMBER="$(grep /tmp/runtimeinfo -ne "^{$" | cut -f1 -d:)"
 LINE_NUMBER="$(($LINE_NUMBER-1))"
