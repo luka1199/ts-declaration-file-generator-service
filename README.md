@@ -24,3 +24,10 @@ Clone this repository and then run:
 ```shell
 ./bin/run.sh abs /tmp/results
 ```
+
+`/tmp/results/abs/index.d.ts`:
+```typescript
+export = Abs;
+
+declare function Abs(input: string): string;
+```
